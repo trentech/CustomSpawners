@@ -6,7 +6,7 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = "0.1.0"
+version = "0.2.0"
 group = "com.gmail.trentech"
 
 repositories {
@@ -31,7 +31,7 @@ configurations {
 }
 
 dependencies {
-    compile "org.spongepowered:spongeapi:4.1.0-SNAPSHOT"
+    compile "org.spongepowered:spongeapi:5.0.0-SNAPSHOT"
 	shade "com.github.Flibio:Updatifier:-SNAPSHOT:api"
 	shade "net.minecrell.mcstats:statslite-sponge:0.2.2"
 }
@@ -41,5 +41,5 @@ jar {
     configurations.shade.copyRecursive().setTransitive(false).each { artifact ->
       from (zipTree(artifact))
     }
-    baseName = 'customspawners-4.1.0'
+    baseName = 'customspawners-5.0.0'
 }
