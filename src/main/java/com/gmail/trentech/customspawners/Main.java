@@ -89,7 +89,7 @@ public class Main {
 		
 		List<EntityType> entities = spawner.getEntities();
 
-		Sponge.getScheduler().createTaskBuilder().interval(spawner.getTime(), TimeUnit.SECONDS).name("customspawners:" + spawner.getName() + ":spawn").execute(t -> {
+		Sponge.getScheduler().createTaskBuilder().delay(spawner.getTime() / 2, TimeUnit.SECONDS).interval(spawner.getTime(), TimeUnit.SECONDS).name("customspawners:" + spawner.getName() + ":spawn").execute(t -> {
 			if(world.isLoaded()) {
 				Optional<Chunk> optionalChunk = world.getChunk(spawnerLocation.getChunkPosition());
 				
