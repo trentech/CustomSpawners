@@ -48,28 +48,28 @@ public class CMDCreate implements CommandExecutor {
 		}
 		Player player = (Player) src;
 
-		String name = args.<String> getOne("name").get().toLowerCase();
+		String name = args.<String>getOne("name").get().toLowerCase();
 
-		String[] ent = args.<String> getOne("entity,entity...").get().split(",");
+		String[] ent = args.<String>getOne("entity,entity...").get().split(",");
 
-		int amount = args.<Integer> getOne("amount").get();
-		
+		int amount = args.<Integer>getOne("amount").get();
+
 		if (amount <= 0) {
 			throw new CommandException(Text.of(TextColors.RED, "<amount> Must be greater than 0"), false);
 		}
-		
-		int time = args.<Integer> getOne("time").get();
-		
+
+		int time = args.<Integer>getOne("time").get();
+
 		if (time <= 0) {
 			throw new CommandException(Text.of(TextColors.RED, "<time> Must be greater than 0"), false);
 		}
-		
-		int radius = args.<Integer> getOne("radius").get();
+
+		int radius = args.<Integer>getOne("radius").get();
 
 		if (radius <= 0) {
 			throw new CommandException(Text.of(TextColors.RED, "<radius> Must be greater than 0"), false);
 		}
-		
+
 		Optional<Spawner> optionalSpawner = Spawner.get(name);
 
 		if (optionalSpawner.isPresent()) {
@@ -98,26 +98,26 @@ public class CMDCreate implements CommandExecutor {
 		}
 
 		BlockRay<World> blockRay = BlockRay.from(player).blockLimit(16).filter(BlockRay.onlyAirFilter()).build();
-		
+
 		Optional<BlockRayHit<World>> optionalHit = blockRay.end();
-		
-		if(!optionalHit.isPresent()) {
+
+		if (!optionalHit.isPresent()) {
 			throw new CommandException(Text.of(TextColors.RED, "Must be looking at a block"), false);
 		}
 		Location<World> location = optionalHit.get().getLocation();
-		
+
 		BlockState state = BlockTypes.STAINED_GLASS.getDefaultState();
 
 		DyeableData dyeableData = Sponge.getDataManager().getManipulatorBuilder(DyeableData.class).get().create();
 		dyeableData.type().set(DyeColors.BLACK);
 
 		state = state.with(dyeableData.asImmutable()).get();
-		
-		if(location.setBlock(state, Cause.source(Main.getPlugin()).named(NamedCause.simulated(player)).build())) {
+
+		if (location.setBlock(state, Cause.source(Main.getPlugin()).named(NamedCause.simulated(player)).build())) {
 			new Spawner(name, entities, location, amount, time, radius, true).create();
 
 			player.sendMessage(Text.of(TextColors.DARK_GREEN, "Spawner created"));
-			
+
 			return CommandResult.success();
 		}
 

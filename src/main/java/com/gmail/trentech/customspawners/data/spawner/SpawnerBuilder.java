@@ -31,7 +31,7 @@ public class SpawnerBuilder extends AbstractDataBuilder<Spawner> {
 	protected Optional<Spawner> buildContent(DataView container) throws InvalidDataException {
 		if (container.contains(NAME, ENTITIES, LOCATION, AMOUNT, TIME, RANGE, ENABLE)) {
 			String name = container.getString(NAME).get();
-			
+
 			List<EntityType> entities = new ArrayList<>();
 
 			for (String entity : (List<String>) container.getList(ENTITIES).get()) {

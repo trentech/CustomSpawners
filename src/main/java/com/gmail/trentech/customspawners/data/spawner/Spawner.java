@@ -29,7 +29,7 @@ public class Spawner extends SQLUtils implements DataSerializable {
 	private static ConcurrentHashMap<String, Spawner> cache = new ConcurrentHashMap<>();
 
 	protected String name;
-	
+
 	protected List<EntityType> entities;
 	protected Location<World> location;
 	protected int amount;
@@ -110,50 +110,52 @@ public class Spawner extends SQLUtils implements DataSerializable {
 	}
 
 	public static Optional<Spawner> get(Location<World> location) {
-		for(Entry<String, Spawner> entry : all().entrySet()) {
+		for (Entry<String, Spawner> entry : all().entrySet()) {
 			Spawner spawner = entry.getValue();
 
-			if(location.getPosition().equals(spawner.getLocation().getPosition())) {
+			if (location.getPosition().equals(spawner.getLocation().getPosition())) {
 				return Optional.of(spawner);
 			}
 		}
-		
+
 		return Optional.empty();
 	}
-	
+
 	public static ConcurrentHashMap<String, Spawner> all() {
 		return cache;
 	}
 
-//	public void updateClient(Player player, boolean reset) {
-//		if(location.getExtent().getChunk(location.getChunkPosition()).get().isLoaded()) {
-//			if (reset) {
-//				player.resetBlockChange(location.getBlockPosition());
-//			} else {
-//				BlockState state = BlockTypes.STAINED_GLASS.getDefaultState();
-//
-//				DyeableData dyeableData = Sponge.getDataManager().getManipulatorBuilder(DyeableData.class).get().create();
-//				dyeableData.type().set(DyeColors.BLACK);
-//
-//				state = state.with(dyeableData.asImmutable()).get();
-//				
-//				player.sendBlockChange(location.getBlockPosition(), state);
-//			}
-//		}
-//	}
-//
-//	public void update(boolean reset) {
-//		World world = location.getExtent();
-//
-//		Predicate<Entity> filter = e -> {
-//			return e.getType().equals(EntityTypes.PLAYER);
-//		};
-//
-//		for (Entity entity : world.getEntities(filter)) {
-//			updateClient((Player) entity, reset);
-//		}
-//	}
-	
+	// public void updateClient(Player player, boolean reset) {
+	// if(location.getExtent().getChunk(location.getChunkPosition()).get().isLoaded())
+	// {
+	// if (reset) {
+	// player.resetBlockChange(location.getBlockPosition());
+	// } else {
+	// BlockState state = BlockTypes.STAINED_GLASS.getDefaultState();
+	//
+	// DyeableData dyeableData =
+	// Sponge.getDataManager().getManipulatorBuilder(DyeableData.class).get().create();
+	// dyeableData.type().set(DyeColors.BLACK);
+	//
+	// state = state.with(dyeableData.asImmutable()).get();
+	//
+	// player.sendBlockChange(location.getBlockPosition(), state);
+	// }
+	// }
+	// }
+	//
+	// public void update(boolean reset) {
+	// World world = location.getExtent();
+	//
+	// Predicate<Entity> filter = e -> {
+	// return e.getType().equals(EntityTypes.PLAYER);
+	// };
+	//
+	// for (Entity entity : world.getEntities(filter)) {
+	// updateClient((Player) entity, reset);
+	// }
+	// }
+
 	public void create() {
 		try {
 			Connection connection = getDataSource().getConnection();

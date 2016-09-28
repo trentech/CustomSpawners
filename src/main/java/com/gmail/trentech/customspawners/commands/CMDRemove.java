@@ -31,7 +31,7 @@ public class CMDRemove implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-		String name = args.<String> getOne("name").get().toLowerCase();
+		String name = args.<String>getOne("name").get().toLowerCase();
 
 		Optional<Spawner> optionalSpawner = Spawner.get(name);
 
@@ -39,14 +39,14 @@ public class CMDRemove implements CommandExecutor {
 			throw new CommandException(Text.of(TextColors.RED, name, " does not exist"), false);
 		}
 		Spawner spawner = optionalSpawner.get();
-		
+
 		Location<World> location = spawner.getLocation();
-		
-		if(location.setBlock(BlockTypes.AIR.getDefaultState(), Cause.source(Main.getPlugin()).named(NamedCause.simulated(src)).build())) {
+
+		if (location.setBlock(BlockTypes.AIR.getDefaultState(), Cause.source(Main.getPlugin()).named(NamedCause.simulated(src)).build())) {
 			spawner.remove();
 
 			src.sendMessage(Text.of(TextColors.DARK_GREEN, "Spawner removed"));
-			
+
 			return CommandResult.success();
 		}
 

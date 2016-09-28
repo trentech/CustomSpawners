@@ -45,10 +45,10 @@ public class Main {
 	private Logger log;
 	private ThreadLocalRandom random = ThreadLocalRandom.current();
 	private ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
-	
+
 	private static PluginContainer plugin;
 	private static Main instance;
-	
+
 	@Listener
 	public void onPreInitializationEvent(GamePreInitializationEvent event) {
 		plugin = Sponge.getPluginManager().getPlugin(Resource.ID).get();
@@ -80,20 +80,20 @@ public class Main {
 	public static Main instance() {
 		return instance;
 	}
-	
+
 	public void spawn(Spawner spawner) {
 		AtomicReference<Location<World>> location = new AtomicReference<>(spawner.getLocation());
 		Location<World> spawnerLocation = spawner.getLocation();
 		World world = spawnerLocation.getExtent();
 		ParticleEffect spawnParticle = ParticleEffect.builder().type(ParticleTypes.FLAME).count(3).build();
-		
+
 		List<EntityType> entities = spawner.getEntities();
 
 		Sponge.getScheduler().createTaskBuilder().delay(spawner.getTime() / 2, TimeUnit.SECONDS).interval(spawner.getTime(), TimeUnit.SECONDS).name("customspawners:" + spawner.getName() + ":spawn").execute(t -> {
-			if(world.isLoaded()) {
+			if (world.isLoaded()) {
 				Optional<Chunk> optionalChunk = world.getChunk(spawnerLocation.getChunkPosition());
-				
-				if(optionalChunk.isPresent() && optionalChunk.get().isLoaded()) {
+
+				if (optionalChunk.isPresent() && optionalChunk.get().isLoaded()) {
 					for (int i = 0; i < spawner.getAmount(); i++) {
 
 						location.set(getRandomLocation(location.get(), spawner.getRadius()));
@@ -107,7 +107,7 @@ public class Main {
 						for (int x = 0; x < 9; x++) {
 							location.get().getExtent().spawnParticles(particle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
 							location.get().getExtent().spawnParticles(particle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
-							
+
 							spawnerLocation.getExtent().spawnParticles(spawnParticle, spawnerLocation.getPosition().add(random.nextDouble(), random.nextDouble(), random.nextDouble()));
 							spawnerLocation.getExtent().spawnParticles(spawnParticle, spawnerLocation.getPosition().add(random.nextDouble(), random.nextDouble(), random.nextDouble()));
 						}
@@ -116,18 +116,19 @@ public class Main {
 
 			}
 		}).submit(getPlugin());
-		
-//		Sponge.getScheduler().createTaskBuilder().intervalTicks(20).name("customspawners:" + spawner.getName() + ":blockupdate").execute(t -> {
-//			spawner.update(false);
-//		}).submit(getPlugin());
-		
+
+		// Sponge.getScheduler().createTaskBuilder().intervalTicks(20).name("customspawners:"
+		// + spawner.getName() + ":blockupdate").execute(t -> {
+		// spawner.update(false);
+		// }).submit(getPlugin());
+
 		Sponge.getScheduler().createTaskBuilder().interval(70, TimeUnit.MILLISECONDS).name("customspawners:" + spawner.getName() + ":particle").execute(t -> {
 			ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
-			
-			if(world.isLoaded()) {
+
+			if (world.isLoaded()) {
 				Optional<Chunk> optionalChunk = world.getChunk(spawnerLocation.getChunkPosition());
-				
-				if(optionalChunk.isPresent() && optionalChunk.get().isLoaded()) {
+
+				if (optionalChunk.isPresent() && optionalChunk.get().isLoaded()) {
 					world.spawnParticles(particle, spawnerLocation.getPosition().add(random.nextDouble(), random.nextDouble(), random.nextDouble()));
 				}
 			}
@@ -146,11 +147,11 @@ public class Main {
 			if (!optionalLocation.isPresent()) {
 				continue;
 			}
-			
-			if(optionalLocation.equals(location)) {
+
+			if (optionalLocation.equals(location)) {
 				continue;
 			}
-			
+
 			return optionalLocation.get();
 		}
 		return location;

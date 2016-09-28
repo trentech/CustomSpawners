@@ -25,7 +25,7 @@ public class CMDDisable implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-		String name = args.<String> getOne("name").get().toLowerCase();
+		String name = args.<String>getOne("name").get().toLowerCase();
 
 		Optional<Spawner> optionalSpawner = Spawner.get(name);
 
@@ -34,10 +34,10 @@ public class CMDDisable implements CommandExecutor {
 		}
 		Spawner spawner = optionalSpawner.get();
 
-		if(!spawner.isEnabled()) {
+		if (!spawner.isEnabled()) {
 			throw new CommandException(Text.of(TextColors.RED, "Spawner already disabled"), false);
 		}
-		
+
 		spawner.setEnabled(false);
 		spawner.update();
 

@@ -23,35 +23,35 @@ public class EventListener {
 
 	@Listener
 	public void onBlockChangeEvent(ChangeBlockEvent.Break event) {
-		for(Transaction<BlockSnapshot> transaction : event.getTransactions()) {
+		for (Transaction<BlockSnapshot> transaction : event.getTransactions()) {
 			BlockSnapshot snapshot = transaction.getOriginal();
-			
+
 			Optional<Location<World>> optionalLocation = snapshot.getLocation();
-			
-			if(!optionalLocation.isPresent()) {
+
+			if (!optionalLocation.isPresent()) {
 				return;
 			}
 			Location<World> location = optionalLocation.get();
-			
+
 			Optional<Spawner> optionalSpawner = Spawner.get(location);
-			
-			if(!optionalSpawner.isPresent()) {
+
+			if (!optionalSpawner.isPresent()) {
 				return;
 			}
 			Spawner spawner = optionalSpawner.get();
-			
+
 			spawner.remove();
 
 			Optional<Player> optionalPlayer = event.getCause().first(Player.class);
-			
-			if(!optionalPlayer.isPresent()) {
+
+			if (!optionalPlayer.isPresent()) {
 				return;
 			}
 
 			int amount = ThreadLocalRandom.current().nextInt(6) + 1;
 
 			ExperienceOrb entity = (ExperienceOrb) location.getExtent().createEntity(EntityTypes.EXPERIENCE_ORB, location.getPosition());
-			
+
 			entity.experienceHeld().experience().set(amount);
 
 			location.getExtent().spawnEntity(entity, Cause.of(NamedCause.source(EntitySpawnCause.builder().entity(entity).type(SpawnTypes.PLUGIN).build())));
