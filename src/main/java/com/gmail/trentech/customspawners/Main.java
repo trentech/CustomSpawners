@@ -139,8 +139,8 @@ public class Main {
 		TeleportHelper teleportHelper = Sponge.getGame().getTeleportHelper();
 
 		for (int i = 0; i < 19; i++) {
-			double x = Math.random() * (radius * 2) - radius;
-            double z = Math.random() * (radius * 2) - radius;
+			double x = random.nextDouble() * (radius * 2) - radius;
+            double z = random.nextDouble() * (radius * 2) - radius;
 
 			Optional<Location<World>> optionalLocation = teleportHelper.getSafeLocation(location.add(x, 0, z));
 
