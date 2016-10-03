@@ -137,11 +137,12 @@ public class Main {
 
 	private Location<World> getRandomLocation(Location<World> location, int radius) {
 		TeleportHelper teleportHelper = Sponge.getGame().getTeleportHelper();
-
+		radius = radius / 2;
+		
 		for (int i = 0; i < 19; i++) {
-			int x = (random.nextInt(radius * 2) - radius) + location.getBlockX();
-			int z = (random.nextInt(radius * 2) - radius) + location.getBlockZ();
-
+			int x = random.nextInt((radius * 2) - radius) + location.getBlockX();
+			int z = random.nextInt((radius * 2) - radius) + location.getBlockZ();
+			
 			Optional<Location<World>> optionalLocation = teleportHelper.getSafeLocation(location.getExtent().getLocation(x, location.getBlockY(), z));
 
 			if (!optionalLocation.isPresent()) {
