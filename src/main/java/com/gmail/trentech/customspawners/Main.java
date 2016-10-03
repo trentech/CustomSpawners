@@ -96,7 +96,7 @@ public class Main {
 				if (optionalChunk.isPresent() && optionalChunk.get().isLoaded()) {
 					for (int i = 0; i < spawner.getAmount(); i++) {
 
-						location.set(getRandomLocation(location.get(), spawner.getRadius()));
+						location.set(getRandomLocation(spawnerLocation, spawner.getRadius()));
 
 						EntityType entityType = entities.get(random.nextInt(entities.size()));
 
@@ -137,13 +137,12 @@ public class Main {
 
 	private Location<World> getRandomLocation(Location<World> location, int radius) {
 		TeleportHelper teleportHelper = Sponge.getGame().getTeleportHelper();
-		radius = radius / 2;
-		
+
 		for (int i = 0; i < 19; i++) {
-			int x = random.nextInt((radius * 2) - radius) + location.getBlockX();
-			int z = random.nextInt((radius * 2) - radius) + location.getBlockZ();
-			
-			Optional<Location<World>> optionalLocation = teleportHelper.getSafeLocation(location.getExtent().getLocation(x, location.getBlockY(), z));
+			double x = Math.random() * (radius * 2) - radius;
+            double z = Math.random() * (radius * 2) - radius;
+
+			Optional<Location<World>> optionalLocation = teleportHelper.getSafeLocation(location.add(x, 0, z));
 
 			if (!optionalLocation.isPresent()) {
 				continue;
