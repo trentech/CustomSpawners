@@ -45,7 +45,7 @@ public class Main {
 	@Inject
 	private Logger log;
 	private ThreadLocalRandom random = ThreadLocalRandom.current();
-	private ParticleEffect particle;
+	private ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
 
 	private static PluginContainer plugin;
 	private static Main instance;
@@ -64,47 +64,47 @@ public class Main {
 
 		SQLUtils.createTables();
 		
-		Help spawnerCreate = new Help("create", "create", "Use this command to create a spawner")
-				.setPermission("customspawners.cmd.spawner.create")
-				.addUsage("/spawner create <name> <amount> <time> <radius> <entity,entity...>")
-				.addUsage("/cs c <name> <amount> <time> <radius> <entity,entity...>")
-				.addExample("/spawner create MySpawner ZOMBIE 3 10 20");
-		
-		Help spawnerDisable = new Help("disable", "disable", "Disable spawner based on the name it was created")
-				.setPermission("customspawners.cmd.spawner.disable")
-				.addUsage("/spawner disable <name>")
-				.addUsage("/cs d <name>")
-				.addExample("/spawner disable MySpawner");
-		
-		Help spawnerEnable = new Help("enable", "enable", "Enable spawner based on the name it was created")
-				.setPermission("customspawners.cmd.spawner.enable")
-				.addUsage("/spawner enable <name>")
-				.addUsage("/cs e <name>")
-				.addExample(" /spawner enable MySpawner");
-		
-		Help spawnerList = new Help("list", "list", "List all spawners by name")
-				.setPermission("customspawners.cmd.spawner.list")
-				.addUsage("/spawner list")
-				.addUsage("/cs ls")
-				.addExample("/spawner list");
-		
-		Help spawnerRemove = new Help("remove", "remove", "Remove spawner based on the name it was created")
-				.setPermission("customspawners.cmd.spawner.remove")
-				.addUsage("/spawner remove <name>")
-				.addUsage("/cs r <name>")
-				.addExample("/spawner remove MySpawner");
-		
-		Help spawner = new Help("spawner", "spawner", "")
-				.setPermission("customspawners.cmd.spawner")
-				.addChild(spawnerRemove)
-				.addChild(spawnerList)
-				.addChild(spawnerEnable)
-				.addChild(spawnerDisable)
-				.addChild(spawnerCreate);
-		
-		Help.register(spawner);
-		
-		this.particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
+		if(Sponge.getPluginManager().getPlugin("helpme").isPresent()) {
+			Help spawnerCreate = new Help("spawner create", "create", "Use this command to create a spawner")
+					.setPermission("customspawners.cmd.spawner.create")
+					.addUsage("/spawner create <name> <amount> <time> <radius> <entity,entity...>")
+					.addUsage("/cs c <name> <amount> <time> <radius> <entity,entity...>")
+					.addExample("/spawner create MySpawner ZOMBIE 3 10 20");
+			
+			Help spawnerDisable = new Help("spawner disable", "disable", "Disable spawner based on the name it was created")
+					.setPermission("customspawners.cmd.spawner.disable")
+					.addUsage("/spawner disable <name>")
+					.addUsage("/cs d <name>")
+					.addExample("/spawner disable MySpawner");
+			
+			Help spawnerEnable = new Help("spawner enable", "enable", "Enable spawner based on the name it was created")
+					.setPermission("customspawners.cmd.spawner.enable")
+					.addUsage("/spawner enable <name>")
+					.addUsage("/cs e <name>")
+					.addExample(" /spawner enable MySpawner");
+			
+			Help spawnerList = new Help("spawner list", "list", "List all spawners by name")
+					.setPermission("customspawners.cmd.spawner.list")
+					.addUsage("/spawner list")
+					.addUsage("/cs ls")
+					.addExample("/spawner list");
+			
+			Help spawnerRemove = new Help("spawner remove", "remove", "Remove spawner based on the name it was created")
+					.setPermission("customspawners.cmd.spawner.remove")
+					.addUsage("/spawner remove <name>")
+					.addUsage("/cs r <name>")
+					.addExample("/spawner remove MySpawner");
+			
+			Help spawner = new Help("spawner", "spawner", "")
+					.setPermission("customspawners.cmd.spawner")
+					.addChild(spawnerRemove)
+					.addChild(spawnerList)
+					.addChild(spawnerEnable)
+					.addChild(spawnerDisable)
+					.addChild(spawnerCreate);
+			
+			Help.register(spawner);
+		}
 	}
 
 	@Listener
