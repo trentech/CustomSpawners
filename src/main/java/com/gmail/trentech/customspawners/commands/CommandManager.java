@@ -50,7 +50,7 @@ public class CommandManager {
 		    .child(cmdRemove, "remove", "r")
 		    .child(cmdEnable, "enable", "e")
 		    .child(cmdDisable, "disable", "d")
-		    .child(cmdList, "list", "l")
+		    .child(cmdList, "list", "ls")
 		    .child(cmdEntities, "entities", "ent")
 		    .executor(new CMDSpawner())
 		    .build();

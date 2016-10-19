@@ -45,7 +45,6 @@ public class Main {
 	@Inject
 	private Logger log;
 	private ThreadLocalRandom random = ThreadLocalRandom.current();
-	private ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
 
 	private static PluginContainer plugin;
 	private static Main instance;
@@ -64,7 +63,7 @@ public class Main {
 
 		SQLUtils.createTables();
 		
-		if(Sponge.getPluginManager().getPlugin("helpme").isPresent()) {
+		if (Sponge.getPluginManager().isLoaded("helpme")) {
 			Help spawnerCreate = new Help("spawner create", "create", "Use this command to create a spawner")
 					.setPermission("customspawners.cmd.spawner.create")
 					.addUsage("/spawner create <name> <amount> <time> <radius> <entity,entity...>")
@@ -148,8 +147,8 @@ public class Main {
 						location.get().getExtent().spawnEntity(entity, Cause.of(NamedCause.source(EntitySpawnCause.builder().entity(entity).type(SpawnTypes.PLUGIN).build())));
 
 						for (int x = 0; x < 9; x++) {
-							location.get().getExtent().spawnParticles(particle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
-							location.get().getExtent().spawnParticles(particle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
+							location.get().getExtent().spawnParticles(spawnParticle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
+							location.get().getExtent().spawnParticles(spawnParticle, location.get().getPosition().add(random.nextDouble() - .5, random.nextDouble() - .5, random.nextDouble() - .5));
 
 							spawnerLocation.getExtent().spawnParticles(spawnParticle, spawnerLocation.getPosition().add(random.nextDouble(), random.nextDouble(), random.nextDouble()));
 							spawnerLocation.getExtent().spawnParticles(spawnParticle, spawnerLocation.getPosition().add(random.nextDouble(), random.nextDouble(), random.nextDouble()));
