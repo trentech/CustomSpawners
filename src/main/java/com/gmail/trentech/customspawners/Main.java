@@ -33,18 +33,19 @@ import com.gmail.trentech.customspawners.data.spawner.Spawner;
 import com.gmail.trentech.customspawners.data.spawner.SpawnerBuilder;
 import com.gmail.trentech.customspawners.utils.Resource;
 import com.gmail.trentech.customspawners.utils.SQLUtils;
+import com.gmail.trentech.helpme.Help;
 import com.google.inject.Inject;
 
 import me.flibio.updatifier.Updatifier;
 
 @Updatifier(repoName = Resource.NAME, repoOwner = Resource.AUTHOR, version = Resource.VERSION)
-@Plugin(id = Resource.ID, name = Resource.NAME, version = Resource.VERSION, description = Resource.DESCRIPTION, authors = Resource.AUTHOR, url = Resource.URL, dependencies = { @Dependency(id = "Updatifier", optional = true) })
+@Plugin(id = Resource.ID, name = Resource.NAME, version = Resource.VERSION, description = Resource.DESCRIPTION, authors = Resource.AUTHOR, url = Resource.URL, dependencies = { @Dependency(id = "Updatifier", optional = true), @Dependency(id = "helpme", optional = true) })
 public class Main {
 
 	@Inject
 	private Logger log;
 	private ThreadLocalRandom random = ThreadLocalRandom.current();
-	private ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
+	private ParticleEffect particle;
 
 	private static PluginContainer plugin;
 	private static Main instance;
@@ -62,6 +63,48 @@ public class Main {
 		Sponge.getCommandManager().register(this, new CommandManager().cmdSpawner, "spawner", "cs");
 
 		SQLUtils.createTables();
+		
+		Help spawnerCreate = new Help("create", "create", "Use this command to create a spawner")
+				.setPermission("customspawners.cmd.spawner.create")
+				.addUsage("/spawner create <name> <amount> <time> <radius> <entity,entity...>")
+				.addUsage("/cs c <name> <amount> <time> <radius> <entity,entity...>")
+				.addExample("/spawner create MySpawner ZOMBIE 3 10 20");
+		
+		Help spawnerDisable = new Help("disable", "disable", "Disable spawner based on the name it was created")
+				.setPermission("customspawners.cmd.spawner.disable")
+				.addUsage("/spawner disable <name>")
+				.addUsage("/cs d <name>")
+				.addExample("/spawner disable MySpawner");
+		
+		Help spawnerEnable = new Help("enable", "enable", "Enable spawner based on the name it was created")
+				.setPermission("customspawners.cmd.spawner.enable")
+				.addUsage("/spawner enable <name>")
+				.addUsage("/cs e <name>")
+				.addExample(" /spawner enable MySpawner");
+		
+		Help spawnerList = new Help("list", "list", "List all spawners by name")
+				.setPermission("customspawners.cmd.spawner.list")
+				.addUsage("/spawner list")
+				.addUsage("/cs ls")
+				.addExample("/spawner list");
+		
+		Help spawnerRemove = new Help("remove", "remove", "Remove spawner based on the name it was created")
+				.setPermission("customspawners.cmd.spawner.remove")
+				.addUsage("/spawner remove <name>")
+				.addUsage("/cs r <name>")
+				.addExample("/spawner remove MySpawner");
+		
+		Help spawner = new Help("spawner", "spawner", "")
+				.setPermission("customspawners.cmd.spawner")
+				.addChild(spawnerRemove)
+				.addChild(spawnerList)
+				.addChild(spawnerEnable)
+				.addChild(spawnerDisable)
+				.addChild(spawnerCreate);
+		
+		Help.register(spawner);
+		
+		this.particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
 	}
 
 	@Listener
@@ -85,7 +128,7 @@ public class Main {
 		AtomicReference<Location<World>> location = new AtomicReference<>(spawner.getLocation());
 		Location<World> spawnerLocation = spawner.getLocation();
 		World world = spawnerLocation.getExtent();
-		ParticleEffect spawnParticle = ParticleEffect.builder().type(ParticleTypes.FLAME).count(3).build();
+		ParticleEffect spawnParticle = ParticleEffect.builder().type(ParticleTypes.FLAME).quantity(3).build();
 
 		List<EntityType> entities = spawner.getEntities();
 
@@ -123,7 +166,7 @@ public class Main {
 		// }).submit(getPlugin());
 
 		Sponge.getScheduler().createTaskBuilder().interval(70, TimeUnit.MILLISECONDS).name("customspawners:" + spawner.getName() + ":particle").execute(t -> {
-			ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).build();
+			ParticleEffect particle = ParticleEffect.builder().type(ParticleTypes.FLAME).quantity(3).build();
 
 			if (world.isLoaded()) {
 				Optional<Chunk> optionalChunk = world.getChunk(spawnerLocation.getChunkPosition());

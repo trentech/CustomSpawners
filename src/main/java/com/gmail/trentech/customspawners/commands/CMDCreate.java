@@ -15,8 +15,6 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.data.manipulator.mutable.DyeableData;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.EntityType;
-import org.spongepowered.api.entity.EntityTypes;
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
@@ -29,17 +27,8 @@ import org.spongepowered.api.world.World;
 
 import com.gmail.trentech.customspawners.Main;
 import com.gmail.trentech.customspawners.data.spawner.Spawner;
-import com.gmail.trentech.customspawners.utils.Help;
 
 public class CMDCreate implements CommandExecutor {
-
-	public CMDCreate() {
-		Help help = new Help("create", "create", " Use this command to create a spawner");
-		help.setPermission("customspawners.cmd.spawner.create");
-		help.setSyntax(" /spawner create <name> <entity,entity...> <amount> <time> <radius>\n /cs c <name> <entity,entity...> <amount> <time> <radius>");
-		help.setExample(" /spawner create MySpawner ZOMBIE 3 10 20");
-		help.save();
-	}
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -50,8 +39,8 @@ public class CMDCreate implements CommandExecutor {
 
 		String name = args.<String>getOne("name").get().toLowerCase();
 
-		String[] ent = args.<String>getOne("entity,entity...").get().split(",");
-
+		
+		
 		int amount = args.<Integer>getOne("amount").get();
 
 		if (amount <= 0) {
@@ -76,26 +65,7 @@ public class CMDCreate implements CommandExecutor {
 			throw new CommandException(Text.of(TextColors.RED, name, " already exists"), false);
 		}
 
-		List<EntityType> entities = new ArrayList<>();
-
-		for (String entityName : ent) {
-			Optional<EntityType> optionalEntity = Sponge.getRegistry().getType(EntityType.class, entityName);
-
-			if (!optionalEntity.isPresent()) {
-				throw new CommandException(Text.of(TextColors.RED, "<entity,entity...> Not a valid entity"), false);
-			}
-			EntityType entityType = optionalEntity.get();
-
-			if (!Living.class.isAssignableFrom(entityType.getEntityClass())) {
-				throw new CommandException(Text.of(TextColors.RED, "<entity,entity...> Not a valid entity"), false);
-			}
-
-			if (entityType.equals(EntityTypes.ARMOR_STAND) || entityType.equals(EntityTypes.HUMAN) || entityType.equals(EntityTypes.PLAYER)) {
-				throw new CommandException(Text.of(TextColors.RED, "<entity,entity...> Not a valid entity"), false);
-			}
-
-			entities.add(entityType);
-		}
+		List<EntityType> entities = new ArrayList<>(args.getAll("entity"));
 
 		BlockRay<World> blockRay = BlockRay.from(player).distanceLimit(16).stopFilter(BlockRay.onlyAirFilter()).build();
 
