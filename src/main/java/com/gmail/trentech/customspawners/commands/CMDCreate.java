@@ -97,7 +97,7 @@ public class CMDCreate implements CommandExecutor {
 			entities.add(entityType);
 		}
 
-		BlockRay<World> blockRay = BlockRay.from(player).blockLimit(16).filter(BlockRay.onlyAirFilter()).build();
+		BlockRay<World> blockRay = BlockRay.from(player).distanceLimit(16).stopFilter(BlockRay.onlyAirFilter()).build();
 
 		Optional<BlockRayHit<World>> optionalHit = blockRay.end();
 
