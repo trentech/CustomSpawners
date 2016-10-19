@@ -11,17 +11,8 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import com.gmail.trentech.customspawners.data.spawner.Spawner;
-import com.gmail.trentech.customspawners.utils.Help;
 
 public class CMDDisable implements CommandExecutor {
-
-	public CMDDisable() {
-		Help help = new Help("disable", "disable", " Disable spawner based on the name it was created");
-		help.setPermission("customspawners.cmd.spawner.disable");
-		help.setSyntax(" /spawner disable <name>\n /cs d <name>");
-		help.setExample(" /spawner disable MySpawner");
-		help.save();
-	}
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {

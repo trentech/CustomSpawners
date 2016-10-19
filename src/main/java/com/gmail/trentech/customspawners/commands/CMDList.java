@@ -18,17 +18,8 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import com.gmail.trentech.customspawners.data.spawner.Spawner;
-import com.gmail.trentech.customspawners.utils.Help;
 
 public class CMDList implements CommandExecutor {
-
-	public CMDList() {
-		Help help = new Help("list", "list", " List all spawners by name");
-		help.setPermission("customspawners.cmd.spawner.list");
-		help.setSyntax(" /spawner list\n /cs l");
-		help.setExample(" /spawner list");
-		help.save();
-	}
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {

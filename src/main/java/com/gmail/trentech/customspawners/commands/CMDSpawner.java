@@ -2,9 +2,8 @@ package com.gmail.trentech.customspawners.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -16,29 +15,37 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import com.gmail.trentech.customspawners.utils.Help;
+import com.gmail.trentech.helpme.Help;
 
 public class CMDSpawner implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+		if(Sponge.getPluginManager().getPlugin("helpme").isPresent()) {
+			Help.executeList(src, Help.get("spawner").get().getChildren());
+			
+			return CommandResult.success();
+		}
+
 		List<Text> list = new ArrayList<>();
 
-		list.add(Text.builder().color(TextColors.GREEN).onHover(TextActions.showText(Text.of("Click command to execute "))).onClick(TextActions.runCommand("/customspawners:spawner help")).append(Text.of(" /spawner help")).build());
-
-		for (Entry<String, Help> entry : Help.all().entrySet()) {
-			String id = entry.getKey();
-			String command = entry.getValue().getCommand();
-
-			Optional<String> optionalPermission = entry.getValue().getPermission();
-
-			if (optionalPermission.isPresent()) {
-				if (src.hasPermission(optionalPermission.get())) {
-					list.add(Text.builder().color(TextColors.GREEN).onHover(TextActions.showText(Text.of("Click command for more information "))).onClick(TextActions.executeCallback(Help.getHelp(id))).append(Text.of(" /spawner " + command)).build());
-				}
-			} else {
-				list.add(Text.builder().color(TextColors.GREEN).onHover(TextActions.showText(Text.of("Click command for more information "))).onClick(TextActions.executeCallback(Help.getHelp(id))).append(Text.of(" /spawner " + command)).build());
-			}
+		if (src.hasPermission("customspawners.cmd.spawner.create")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner create")).append(Text.of(" /spawner create")).build());
+		}
+		if (src.hasPermission("customspawners.cmd.spawner.disable")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner disable")).append(Text.of(" /spawner disable")).build());
+		}
+		if (src.hasPermission("customspawners.cmd.spawner.enable")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner enable")).append(Text.of(" /spawner enable")).build());
+		}
+		if (src.hasPermission("customspawners.cmd.spawner.entities")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner entities")).append(Text.of(" /spawner entities")).build());
+		}
+		if (src.hasPermission("customspawners.cmd.spawner.list")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner list")).append(Text.of(" /spawner list")).build());
+		}
+		if (src.hasPermission("customspawners.cmd.spawner.remove")) {
+			list.add(Text.builder().color(TextColors.GREEN).onClick(TextActions.runCommand("/customspawners:spawner remove")).append(Text.of(" /spawner remove")).build());
 		}
 
 		if (src instanceof Player) {
@@ -54,7 +61,6 @@ public class CMDSpawner implements CommandExecutor {
 				src.sendMessage(text);
 			}
 		}
-
 		return CommandResult.success();
 	}
 }

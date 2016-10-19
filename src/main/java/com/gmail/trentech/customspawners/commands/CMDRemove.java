@@ -17,17 +17,8 @@ import org.spongepowered.api.world.World;
 
 import com.gmail.trentech.customspawners.Main;
 import com.gmail.trentech.customspawners.data.spawner.Spawner;
-import com.gmail.trentech.customspawners.utils.Help;
 
 public class CMDRemove implements CommandExecutor {
-
-	public CMDRemove() {
-		Help help = new Help("remove", "remove", " Remove spawner based on the name it was created");
-		help.setPermission("customspawners.cmd.spawner.remove");
-		help.setSyntax(" /spawner remove <name>\n /cs r <name>");
-		help.setExample(" /spawner remove MySpawner");
-		help.save();
-	}
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
