@@ -31,15 +31,15 @@ import org.spongepowered.api.world.World;
 import com.gmail.trentech.customspawners.commands.CommandManager;
 import com.gmail.trentech.customspawners.data.spawner.Spawner;
 import com.gmail.trentech.customspawners.data.spawner.SpawnerBuilder;
+import com.gmail.trentech.customspawners.utils.CommandHelp;
 import com.gmail.trentech.customspawners.utils.Resource;
 import com.gmail.trentech.customspawners.utils.SQLUtils;
-import com.gmail.trentech.helpme.Help;
 import com.google.inject.Inject;
 
 import me.flibio.updatifier.Updatifier;
 
 @Updatifier(repoName = Resource.NAME, repoOwner = Resource.AUTHOR, version = Resource.VERSION)
-@Plugin(id = Resource.ID, name = Resource.NAME, version = Resource.VERSION, description = Resource.DESCRIPTION, authors = Resource.AUTHOR, url = Resource.URL, dependencies = { @Dependency(id = "Updatifier", optional = true), @Dependency(id = "helpme", optional = true) })
+@Plugin(id = Resource.ID, name = Resource.NAME, version = Resource.VERSION, description = Resource.DESCRIPTION, authors = Resource.AUTHOR, url = Resource.URL, dependencies = { @Dependency(id = "Updatifier", optional = true), @Dependency(id = "helpme", version = "0.2.1", optional = true) })
 public class Main {
 
 	@Inject
@@ -63,47 +63,7 @@ public class Main {
 
 		SQLUtils.createTables();
 		
-		if (Sponge.getPluginManager().isLoaded("helpme")) {
-			Help spawnerCreate = new Help("spawner create", "create", "Use this command to create a spawner")
-					.setPermission("customspawners.cmd.spawner.create")
-					.addUsage("/spawner create <name> <amount> <time> <radius> <entity,entity...>")
-					.addUsage("/cs c <name> <amount> <time> <radius> <entity,entity...>")
-					.addExample("/spawner create MySpawner ZOMBIE 3 10 20");
-			
-			Help spawnerDisable = new Help("spawner disable", "disable", "Disable spawner based on the name it was created")
-					.setPermission("customspawners.cmd.spawner.disable")
-					.addUsage("/spawner disable <name>")
-					.addUsage("/cs d <name>")
-					.addExample("/spawner disable MySpawner");
-			
-			Help spawnerEnable = new Help("spawner enable", "enable", "Enable spawner based on the name it was created")
-					.setPermission("customspawners.cmd.spawner.enable")
-					.addUsage("/spawner enable <name>")
-					.addUsage("/cs e <name>")
-					.addExample(" /spawner enable MySpawner");
-			
-			Help spawnerList = new Help("spawner list", "list", "List all spawners by name")
-					.setPermission("customspawners.cmd.spawner.list")
-					.addUsage("/spawner list")
-					.addUsage("/cs ls")
-					.addExample("/spawner list");
-			
-			Help spawnerRemove = new Help("spawner remove", "remove", "Remove spawner based on the name it was created")
-					.setPermission("customspawners.cmd.spawner.remove")
-					.addUsage("/spawner remove <name>")
-					.addUsage("/cs r <name>")
-					.addExample("/spawner remove MySpawner");
-			
-			Help spawner = new Help("spawner", "spawner", "")
-					.setPermission("customspawners.cmd.spawner")
-					.addChild(spawnerRemove)
-					.addChild(spawnerList)
-					.addChild(spawnerEnable)
-					.addChild(spawnerDisable)
-					.addChild(spawnerCreate);
-			
-			Help.register(spawner);
-		}
+		CommandHelp.init();
 	}
 
 	@Listener
